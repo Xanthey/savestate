@@ -140,7 +140,6 @@ savestate/               ← PHP web app (baked into the web image at build time
   └── *.php              ← Page templates
 schema.sql               ← Database schema (auto-loaded on first DB container start)
 company.conf.example     ← Starter config — copy to company.conf and edit
-company.conf             ← Your config (gitignored — do not commit)
 Dockerfile               ← Web image build
 Dockerfile.db            ← DB image build
 docker-compose.yml       ← Bring everything up
