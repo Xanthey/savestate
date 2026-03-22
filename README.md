@@ -4,7 +4,9 @@
 > *Built for the grind, tuned for the arcade.*
 
 SaveState is a self-hosted, session-aware customer support CRM designed for speed and adaptability. It runs on a PHP + MySQL backend with a glassmorphic frontend, and is fully configurable for any support workflow via a single `company.conf` file — no code changes required.
-
+<p align="center">
+  <img src="readmefiles/entry.jpeg" alt="Entry Form" />
+</p>
 ---
 
 ## Features
@@ -21,7 +23,13 @@ SaveState is a self-hosted, session-aware customer support CRM designed for spee
 | 📦 **Bulk Import** | JSON vault import via chunked upload |
 | 🎨 **14 Themes** | Dark, Light, Amber Terminal, Win16, FF6, Castlevania, TMNT, Metroid, Synthwave, Cyberpunk, and more |
 | 👤 **Multi-User** | Separate vaults, XP, and preferences per user |
-
+<table border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td align="center" valign="top"><img src="readmefiles/choose.jpeg" width="400" alt="Admin OOBE" /></td>
+    <td align="center" valign="top"><img src="readmefiles/view.jpeg" width="400" alt="Viewing a ticket" /></td>
+    <td align="center" valign="top"><img src="readmefiles/theme.jpeg" width="400" alt="Themes!" /></td>
+  </tr>
+</table>
 ---
 
 ## Tech Stack
