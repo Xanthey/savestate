@@ -1,0 +1,680 @@
+/* ================================================================
+   SaveState v2 — layout.css
+   App shell · Navigation · Panels · Grid
+   ================================================================ */
+
+/* ── App Shell ──────────────────────────────────────────────── */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+  z-index: 0;
+}
+
+/* ── Titlebar ───────────────────────────────────────────────── */
+.titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 1.5rem;
+  height: 56px;
+  background: var(--titlebar-grad);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
+}
+
+.titlebar__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #fff;
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+  white-space: nowrap;
+}
+
+.titlebar__brand svg,
+.titlebar__brand img {
+  width: 28px;
+  height: 28px;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.5));
+}
+
+.titlebar__nav {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  flex: 1;
+  justify-content: center;
+}
+
+.titlebar__nav a {
+  color: rgba(255, 255, 255, 0.8);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-sm);
+  transition: background var(--t-fast), color var(--t-fast);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.titlebar__nav a:hover,
+.titlebar__nav a.active {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+.titlebar__right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+/* ── Subheader ──────────────────────────────────────────────── */
+.subheader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.6rem 1.5rem;
+  background: var(--subheader-bg, rgba(0, 0, 0, 0.25));
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  position: sticky;
+  top: 56px;
+  z-index: 90;
+}
+
+.subheader__stats {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.stat-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.stat-chip__value {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.subheader__controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Mode indicator badge */
+.mode-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+  opacity: 0.85;
+}
+
+.mode-badge.arcade {
+  color: var(--mode-arcade);
+  background: rgba(255, 78, 205, 0.08);
+}
+
+.mode-badge.lab {
+  color: var(--mode-lab);
+  background: rgba(58, 245, 176, 0.08);
+}
+
+.mode-badge.business {
+  color: var(--mode-business);
+  background: rgba(122, 143, 168, 0.08);
+}
+
+/* ── Main Content Grid ──────────────────────────────────────── */
+.main {
+  display: grid;
+  grid-template-columns: minmax(280px, 400px) 1fr;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  flex: 1;
+  align-items: start;
+  min-width: 0;
+}
+
+@media (max-width: 720px) {
+  .main {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Left column: contact panel + heads up stacked ───────────── */
+.left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+  /* matches right-col height so headsup can fill the remaining space */
+  height: calc(100vh - 190px);
+}
+
+/* ── Glass Panel ────────────────────────────────────────────── */
+.panel {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.panel.glass {
+  /* inherits glass mixin from core.css */
+}
+
+.panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+}
+
+.panel__header-icon {
+  opacity: 0.6;
+  font-size: 0.9rem;
+}
+
+.panel__body {
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.panel__body.dense {
+  gap: 0.4rem;
+}
+
+/* ── Left column panels ──────────────────────────────────────── */
+#contactPanel {
+  align-self: start;
+  flex-shrink: 0;
+}
+
+/* Heads Up panel fills remaining left-col space */
+#headsUpPanel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#headsUpPanel .panel__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* ── Right column ────────────────────────────────────────────── */
+/* Sized to the available vertical space between subheader and footer.
+   Titlebar ~56px + subheader ~46px + footer ~56px + top/bottom padding ~2rem = ~190px */
+.right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: calc(100vh - 190px);
+  align-self: start;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* ── Notes Panel — grows to fill space above lower panels ───── */
+.panel--notes {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.panel--notes .panel__body {
+  flex: 1;
+  min-height: 0;
+  padding-bottom: 0.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Lower Panels Row (Today's Entries + Fuzzy) ──────────────── */
+/* flex: 1 so they grow when there's extra space,
+   min-height ensures at least ~3 entries are visible (~180px) */
+.lower-panels {
+  display: flex;
+  gap: 1rem;
+  flex: 1;
+  min-height: 180px;
+  flex-shrink: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.panel--today,
+.panel--fuzzy {
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.panel--today .panel__body,
+.panel--fuzzy .panel__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  gap: 0;
+}
+
+/* ── Footer / Action Bar ────────────────────────────────────── */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--footer-bg, rgba(0, 0, 0, 0.3));
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--border);
+  position: sticky;
+  bottom: 0;
+  z-index: 90;
+}
+
+.footer__status {
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  min-width: 200px;
+  transition: color var(--t-base);
+}
+
+.footer__status.ok {
+  color: var(--success);
+}
+
+.footer__status.err {
+  color: var(--danger);
+}
+
+.footer__status.working {
+  color: var(--accent);
+}
+
+.footer__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* ── User Avatar in Titlebar ────────────────────────────────── */
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.6rem 0.25rem 0.3rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: background var(--t-fast);
+  font-size: 0.82rem;
+  color: #fff;
+}
+
+.user-chip:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.user-chip__avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--avatar-color, #3a8dde);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+/* ── Vault / Entry Table Layout ─────────────────────────────── */
+.data-page {
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1;
+}
+
+.data-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.data-table-wrap {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+/* ── Login Page ─────────────────────────────────────────────── */
+.login-scene {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 480px;
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  text-align: center;
+}
+
+.login-card__logo {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 1.2rem;
+}
+
+.login-card__title {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--accent-2);
+  margin-bottom: 0.25rem;
+}
+
+.login-card__subtitle {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-bottom: 2rem;
+}
+
+.login-card__profiles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  transition: background var(--t-fast), border-color var(--t-fast);
+  width: 100%;
+}
+
+.profile-btn:hover {
+  background: var(--surface-2);
+  border-color: var(--accent);
+}
+
+.profile-btn__avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.profile-btn__info {
+  flex: 1;
+  text-align: left;
+}
+
+.profile-btn__name {
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--text);
+}
+
+.profile-btn__meta {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text-faint);
+  font-size: 0.78rem;
+  margin: 1rem 0;
+}
+
+.login-divider::before,
+.login-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── RPG / Arcade HUD ───────────────────────────────────────── */
+.arcade-hud {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.4rem 1rem;
+  background: rgba(0, 0, 0, 0.35);
+  border-top: 1px solid rgba(255, 78, 205, 0.2);
+  flex-shrink: 0;
+}
+
+.arcade-hud__level {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--mode-arcade);
+  white-space: nowrap;
+}
+
+.arcade-hud__xp {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 78, 205, 0.15);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.arcade-hud__xp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff4ecd, #a855f7);
+  border-radius: 999px;
+  transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 0 8px rgba(255, 78, 205, 0.6);
+}
+
+.arcade-hud__combo {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--mode-arcade);
+  white-space: nowrap;
+}
+
+.arcade-hud.hidden {
+  display: none;
+}
+
+/* Banner overlay (combo/achievement messages) */
+#arcadeBanner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9000;
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+  text-shadow: 0 0 20px currentColor;
+  transition: none;
+  white-space: nowrap;
+}
+
+#arcadeBanner.show {
+  animation: bannerPop 1.8s ease forwards;
+}
+
+@keyframes bannerPop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+
+  15% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+
+  75% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9) translateY(-20px);
+  }
+}
+
+/* ── Heads Up Panel CSS ─────────────────────────────────────── */
+/* The panel itself is sized by flex: 1 via #headsUpPanel above.
+   These rules handle the inner card layout. */
+
+/* Issue card: tag on its own line, title below */
+.headsup-card {
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.75rem;
+  border-left: 3px solid var(--warning, #f5a623);
+}
+
+.headsup-card__tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--warning, #f5a623);
+  background: rgba(245, 166, 35, 0.12);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  margin-bottom: 0.3rem;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.headsup-card__title {
+  font-weight: 600;
+  font-size: 0.82rem;
+  color: var(--text);
+  line-height: 1.35;
+  margin-bottom: 0.25rem;
+  word-break: break-word;
+}
+
+.headsup-card__desc {
+  font-size: 0.77rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+/* ── Responsive tweaks ──────────────────────────────────────── */
+@media (max-width: 600px) {
+  .titlebar {
+    padding: 0 1rem;
+  }
+
+  .titlebar__nav {
+    display: none;
+  }
+
+  .subheader {
+    padding: 0.5rem 1rem;
+  }
+
+  .main {
+    padding: 0.75rem 1rem;
+  }
+
+  .footer {
+    padding: 0.6rem 1rem;
+  }
+
+  .data-page {
+    padding: 0.75rem 1rem;
+  }
+}

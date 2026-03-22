@@ -1,0 +1,74 @@
+# ═══════════════════════════════════════════════════════════════════
+#  SaveState v2 — Local Build
+#
+#  Builds both images from source. No Docker Hub required.
+#
+#  Before you start:
+#    1. Edit company.conf to match your organization.
+#    2. Change the passwords below before exposing to a network.
+#
+#  Start:  docker compose up -d --build
+#  Stop:   docker compose down
+#  App:    http://localhost:5473
+# ═══════════════════════════════════════════════════════════════════
+
+services:
+
+  # ── SaveState Web (PHP + Nginx) ──────────────────────────────────
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: savestate_web
+    restart: unless-stopped
+    ports:
+      - "5473:8080"
+    volumes:
+      # company.conf: edit this file to configure your org's fields/dropdowns
+      - ./company.conf:/var/www/html/company.conf:ro
+      # uploads: ticket image attachments persist here on the host
+      - ./uploads:/var/www/html/uploads:rw
+    environment:
+      - SS_DB_HOST=db
+      - SS_DB_PORT=3306
+      - SS_DB_NAME=savestate
+      - SS_DB_USER=savestate_user
+      - SS_DB_PASS=savestatepass          # ← change this
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - savestate_net
+
+  # ── SaveState DB (MySQL 8) ───────────────────────────────────────
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile.db
+    container_name: savestate_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword   # ← change this
+      MYSQL_DATABASE:      savestate
+      MYSQL_USER:          savestate_user
+      MYSQL_PASSWORD:      savestatepass  # ← match SS_DB_PASS above
+    volumes:
+      - savestate_db_data:/var/lib/mysql
+    ports:
+      - "127.0.0.1:5474:3306"            # optional: remove if you don't need local DB access
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "savestate_user", "-psavestatepass"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - savestate_net
+
+volumes:
+  savestate_db_data:
+    driver: local
+
+networks:
+  savestate_net:
+    driver: bridge

@@ -1,0 +1,103 @@
+{
+  "company_name": "Belmont Laboratories",
+  "app_title": "SaveState",
+  "app_subtitle": "Contact Intelligence Division",
+  "support_url": "https://belmontlabs.example.com/support",
+  "logo_text": "SS",
+
+  "fields": {
+    "ticket_label": "Incident #",
+    "ticket_placeholder": "e.g., INC-00042",
+    "location_label": "Subject Origin",
+    "location_placeholder": "Lab / Wing / Region",
+    "notes_label": "Field Notes",
+    "notes_placeholder": "Document your findings here, Agent..."
+  },
+
+  "dropdowns": {
+    "reason_for_contact": {
+      "label": "Nature of Inquiry",
+      "options": [
+        "Anomalous Device Behavior",
+        "Account Containment Issue",
+        "Billing Irregularity",
+        "Portal Malfunction",
+        "Connectivity Disruption",
+        "Data Integrity Concern",
+        "Specimen / Asset Request",
+        "Field Escalation",
+        "General Correspondence",
+        "Clearance & Access"
+      ]
+    },
+    "type_of_device": {
+      "label": "Terminal Type",
+      "options": [
+        "Unknown",
+        "Linux Workstation",
+        "Mobile Unit (iOS)",
+        "Mobile Unit (Android)",
+        "Windows Terminal",
+        "Mac Terminal",
+        "Smart Speaker Array",
+        "Connected Display",
+        "Vehicle System",
+        "Other Apparatus"
+      ]
+    },
+    "browser": {
+      "label": "Interface Agent",
+      "options": [
+        "Unknown",
+        "Google Chrome",
+        "Microsoft Edge",
+        "Mozilla Firefox",
+        "Safari",
+        "Opera",
+        "Vivaldi",
+        "Brave",
+        "Tor Browser",
+        "Other"
+      ]
+    },
+    "contact_method": {
+      "label": "Transmission Method",
+      "options": ["Encrypted Mail", "Live Channel", "Voice Line"]
+    },
+    "plan_type": {
+      "label": "Clearance Tier",
+      "options": ["Standard", "Elevated", "Restricted"]
+    }
+  },
+
+  "checkboxes": [
+    { "id": "obtained_info", "label": "Subject Verified",  "default": false },
+    { "id": "has_account",   "label": "Account On File",   "default": false },
+    { "id": "escalated",     "label": "Escalated to R&D",  "default": false }
+  ],
+
+  "solved_field": {
+    "label": "Incident Contained",
+    "id": "solved"
+  },
+
+  "themes": {
+    "default": "dark",
+    "available": [
+      { "value": "dark",            "label": "Dark"              },
+      { "value": "light",           "label": "Light"             },
+      { "value": "iheart-dark",     "label": "iHeart — Dark"     },
+      { "value": "iheart-light",    "label": "iHeart — Light"    },
+      { "value": "amber-dark",      "label": "Amber Terminal"    },
+      { "value": "amber-light",     "label": "Amber — Light"     },
+      { "value": "win16-dark",      "label": "Win16 Dark"        },
+      { "value": "win16-light",     "label": "Win16 Light"       },
+      { "value": "ff6",             "label": "Final Fantasy VI"  },
+      { "value": "castlevania",     "label": "Castlevania"       },
+      { "value": "tmnt",            "label": "TMNT"              },
+      { "value": "metroid",         "label": "Metroid"           },
+      { "value": "synthwave",       "label": "Synthwave"         },
+      { "value": "cyberpunk",       "label": "Cyberpunk"         }
+    ]
+  }
+}

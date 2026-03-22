@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="fluidG2" x1="0%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%"   stop-color="#7dd4ff"/>
+      <stop offset="100%" stop-color="#1e6fc7"/>
+    </linearGradient>
+    <filter id="glow2">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="clip2">
+      <path d="M36,13 L36,36 L22,90 L78,90 L64,36 L64,13 Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- ── FLUID ── -->
+  <g clip-path="url(#clip2)">
+    <polygon points="22,90 78,90 78,52 22,52" fill="url(#fluidG2)"/>
+    <path d="M22,52 Q36,48 50,52 Q64,56 78,50 L78,54 Q64,60 50,56 Q36,52 22,56 Z" fill="#aee6ff" opacity="0.6"/>
+    <ellipse cx="50" cy="52" rx="28" ry="5" fill="#5ab4ff" opacity="0.25" filter="url(#glow2)"/>
+    <circle cx="36" cy="68" r="4"   fill="#c8eeff" opacity="0.5"/>
+    <circle cx="56" cy="60" r="2.5" fill="#c8eeff" opacity="0.4"/>
+    <circle cx="66" cy="76" r="2"   fill="#c8eeff" opacity="0.35"/>
+    <circle cx="44" cy="80" r="1.4" fill="#ffffff" opacity="0.3"/>
+  </g>
+
+  <!-- ── GLASS OUTLINE — one continuous path ──
+       Traces the full silhouette without lifting the pen:
+       spout tip → along rim top → right rim cap down → right neck → right body → base →
+       left body → left neck → left rim cap up → back to spout.
+       This keeps every junction connected with no floating pieces.
+  -->
+  <path d="
+    M24,8
+    L31,7 L69,7
+    L69,13
+    L64,13 L64,36
+    L78,90
+    L22,90
+    L36,36 L36,13
+    L31,13
+    L24,8
+  "
+    fill="none"
+    stroke="#3a8dde"
+    stroke-width="3"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Spout lower lip -->
+  <line x1="24" y1="8" x2="31" y2="10"
+    stroke="#3a8dde" stroke-width="2.5"
+    stroke-linecap="round"/>
+
+  <!-- Base reinforcement -->
+  <line x1="22" y1="90" x2="78" y2="90"
+    stroke="#3a8dde" stroke-width="3.5" stroke-linecap="round"/>
+
+  <!-- Glass glint — neck only, stays within fluid area -->
+  <line x1="39" y1="10" x2="39" y2="34"
+    stroke="#fff" stroke-width="1.5" stroke-opacity="0.2" stroke-linecap="round"/>
+
+</svg>

@@ -1,0 +1,1549 @@
+/* ================================================================
+   SaveState v2 — core.css
+   Tokens · Glass system · All themes · Mode-aware backgrounds
+   ================================================================ */
+
+/* ── Google Fonts ─────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;1,300&family=JetBrains+Mono:wght@400;600&family=Rajdhani:wght@400;600;700&display=swap');
+/* ── Retro / Classic Computer Fonts ──────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap');
+
+/* ── Reset ────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  font-family: var(--font-body);
+  color: var(--text);
+  background: var(--bg);
+  transition: background 0.4s ease, color 0.2s ease;
+}
+
+img,
+svg {
+  display: block;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* ── Base Token Layer (Dark Glass) ───────────────────────── */
+:root {
+  --font-body: 'Exo 2', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-display: 'Rajdhani', sans-serif;
+
+  /* Accent / brand */
+  --accent: #3a8dde;
+  --accent-2: #7dd4ff;
+  --accent-glow: rgba(58, 141, 222, 0.45);
+
+  /* Dark base surfaces */
+  --bg: #0d1117;
+  --bg-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-2: rgba(255, 255, 255, 0.07);
+  --surface-3: rgba(255, 255, 255, 0.11);
+
+  /* Glass panel */
+  --glass-bg: rgba(16, 24, 36, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.10);
+  --glass-blur: 20px;
+  --glass-shine: rgba(255, 255, 255, 0.06);
+
+  /* Text */
+  --text: #dde6f1;
+  --text-muted: #7a8fa8;
+  --text-faint: #3d5068;
+
+  /* Borders */
+  --border: rgba(255, 255, 255, 0.09);
+  --border-focus: var(--accent);
+
+  /* Feedback */
+  --success: #22d362;
+  --warning: #f5a623;
+  --danger: #e84040;
+  --info: #3a8dde;
+
+  /* Geometry */
+  --radius-sm: 6px;
+  --radius: 12px;
+  --radius-lg: 20px;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.6);
+
+  /* Transitions */
+  --t-fast: 0.12s ease;
+  --t-base: 0.22s ease;
+  --t-slow: 0.4s ease;
+
+  /* Titlebar gradient */
+  --titlebar-grad: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+
+  /* Mode label colors */
+  --mode-arcade: #ff4ecd;
+  --mode-lab: #3af5b0;
+  --mode-business: #7a8fa8;
+
+  /* Arcade gradient stops — shifted by the hue animation */
+  --arc-c1: #1a0533;
+  --arc-c2: #0d1a3a;
+  --arc-c3: #1a0a2e;
+}
+
+/* ================================================================
+   GLASS UTILITY
+   ================================================================ */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow),
+    inset 0 1px 0 var(--glass-shine);
+}
+
+.glass-subtle {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+}
+
+/* ── Business & Lab: strip backdrop-blur from glass panels ── */
+/* Blur on top of a static bg is fine; blur on top of animated
+   elements is what kills the GPU. In non-arcade modes the bg
+   is static so we can keep a light blur, but we still reduce it. */
+body[data-mode="business"] .glass,
+body[data-mode="lab"] .glass {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+body[data-mode="business"] .glass-subtle,
+body[data-mode="lab"] .glass-subtle {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* ================================================================
+   BACKGROUND SCENE
+   ================================================================ */
+.bg-scene {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
+/* Solid bg fill */
+.bg-scene::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+}
+
+/* ── Orbs: hidden by default ────────────────────────────── */
+/* We show them ONLY in arcade mode, and only as static
+   radial gradients — no blur filter, no transform animation.
+   Color cycling is done cheaply via @keyframes on opacity
+   of two layered pseudo-elements instead of moving large
+   filter:blur elements. */
+.bg-scene .orb {
+  display: none;
+}
+
+/* ── Arcade mode background ─────────────────────────────── */
+/* A single static radial gradient mesh that slowly shifts
+   hue via a CSS filter hue-rotate on the whole bg-scene.
+   One hue-rotate on a single element costs almost nothing
+   compared to three animated blur(80px) transforms. */
+body[data-mode="arcade"] .bg-scene {
+  animation: arcadeHue 20s linear infinite;
+}
+
+body[data-mode="arcade"] .bg-scene::before {
+  background:
+    radial-gradient(ellipse 60% 50% at 10% 10%, rgba(168, 85, 247, 0.28) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 90% 85%, rgba(255, 78, 205, 0.22) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 55% 50%, rgba(58, 141, 222, 0.12) 0%, transparent 70%),
+    var(--bg);
+}
+
+@keyframes arcadeHue {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
+/* ── Business mode background: flat, zero animation ──────── */
+body[data-mode="business"] .bg-scene {
+  animation: none;
+}
+
+body[data-mode="business"] .bg-scene::before {
+  background: var(--bg);
+}
+
+/* ── Lab mode background: very subtle static gradient ────── */
+body[data-mode="lab"] .bg-scene {
+  animation: none;
+}
+
+body[data-mode="lab"] .bg-scene::before {
+  background:
+    radial-gradient(ellipse 55% 45% at 8% 8%, rgba(58, 245, 176, 0.07) 0%, transparent 65%),
+    radial-gradient(ellipse 45% 55% at 92% 88%, rgba(58, 141, 222, 0.06) 0%, transparent 65%),
+    var(--bg);
+}
+
+/* ── Noise overlay: Lab/Business only (static, cheap) ────── */
+body[data-mode="lab"] .bg-scene::after,
+body[data-mode="business"] .bg-scene::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--bg-noise);
+  background-size: 200px 200px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* No noise in arcade — saves one composite layer */
+body[data-mode="arcade"] .bg-scene::after {
+  display: none;
+}
+
+/* ── Fallback when data-mode not yet set (matches lab) ───── */
+body:not([data-mode]) .bg-scene::before,
+body[data-mode=""] .bg-scene::before {
+  background:
+    radial-gradient(ellipse 55% 45% at 8% 8%, rgba(58, 245, 176, 0.07) 0%, transparent 65%),
+    radial-gradient(ellipse 45% 55% at 92% 88%, rgba(58, 141, 222, 0.06) 0%, transparent 65%),
+    var(--bg);
+}
+
+
+/* ================================================================
+   THEMES
+   ================================================================ */
+
+/* ── Light ────────────────────────────────────────────────── */
+.theme-light {
+  --bg: #e8edf5;
+  --glass-bg: rgba(240, 244, 252, 0.70);
+  --glass-border: rgba(255, 255, 255, 0.55);
+  --glass-shine: rgba(255, 255, 255, 0.55);
+  --surface: rgba(255, 255, 255, 0.55);
+  --surface-2: rgba(255, 255, 255, 0.75);
+  --text: #1a2233;
+  --text-muted: #4b5d7a;
+  --text-faint: #9aabbd;
+  --border: rgba(0, 0, 0, 0.09);
+  --accent: #2563eb;
+  --accent-2: #60a5fa;
+  --accent-glow: rgba(37, 99, 235, 0.3);
+  --subheader-bg: rgba(200, 210, 230, 0.6);
+  --picker-bg: #f0f4fc;
+  --picker-text: #1a2233;
+  --picker-hover: rgba(0, 0, 0, 0.06);
+  --mode-arcade: #c026a0;
+  --mode-lab: #059669;
+  --mode-business: #4b5d7a;
+}
+
+/* ── iHeart Dark ──────────────────────────────────────────── */
+.theme-iheart-dark {
+  --bg: #0e0507;
+  --glass-bg: rgba(20, 6, 8, 0.60);
+  --glass-border: rgba(228, 0, 43, 0.20);
+  --glass-shine: rgba(255, 100, 120, 0.08);
+  --accent: #e4002b;
+  --accent-2: #ff607a;
+  --accent-glow: rgba(228, 0, 43, 0.5);
+  --text: #ffeaee;
+  --text-muted: #c4808a;
+  --text-faint: #6a3040;
+  --border: rgba(228, 0, 43, 0.15);
+  --titlebar-grad: linear-gradient(135deg, #b0001e, #e4002b, #ff607a);
+}
+
+/* ── iHeart Light ─────────────────────────────────────────── */
+.theme-iheart-light {
+  --bg: #fff0f2;
+  --glass-bg: rgba(255, 240, 242, 0.70);
+  --glass-border: rgba(228, 0, 43, 0.20);
+  --glass-shine: rgba(255, 255, 255, 0.7);
+  --accent: #e4002b;
+  --accent-2: #ff4d6d;
+  --accent-glow: rgba(228, 0, 43, 0.25);
+  --text: #1a0508;
+  --text-muted: #7a2030;
+  --text-faint: #c4808a;
+  --border: rgba(228, 0, 43, 0.12);
+  --titlebar-grad: linear-gradient(135deg, #b0001e, #e4002b, #ff607a);
+  --subheader-bg: rgba(255, 220, 225, 0.65);
+  --picker-bg: #fff0f2;
+  --picker-text: #1a0508;
+  --picker-hover: rgba(228, 0, 43, 0.07);
+  --mode-arcade: #c026a0;
+  --mode-lab: #059669;
+  --mode-business: #7a2030;
+}
+
+/* ── Amber Terminal Dark ──────────────────────────────────── */
+.theme-amber-dark {
+  --bg: #0a0800;
+  --glass-bg: rgba(14, 11, 0, 0.70);
+  --glass-border: rgba(255, 180, 0, 0.18);
+  --glass-shine: rgba(255, 200, 50, 0.06);
+  --accent: #ffb300;
+  --accent-2: #ffe066;
+  --accent-glow: rgba(255, 179, 0, 0.45);
+  --text: #ffe799;
+  --text-muted: #a07820;
+  --text-faint: #4a3800;
+  --border: rgba(255, 179, 0, 0.15);
+  --titlebar-grad: linear-gradient(135deg, #c87000, #ffb300, #ffe066);
+  --font-body: 'JetBrains Mono', monospace;
+}
+
+/* ── Amber Terminal Light ─────────────────────────────────── */
+.theme-amber-light {
+  --bg: #fdf8e8;
+  --glass-bg: rgba(253, 248, 232, 0.75);
+  --glass-border: rgba(180, 120, 0, 0.18);
+  --glass-shine: rgba(255, 255, 255, 0.6);
+  --accent: #b86a00;
+  --accent-2: #e6a800;
+  --accent-glow: rgba(184, 106, 0, 0.25);
+  --text: #2a1c00;
+  --text-muted: #7a4d00;
+  --text-faint: #c49a40;
+  --border: rgba(180, 120, 0, 0.12);
+  --titlebar-grad: linear-gradient(135deg, #b86a00, #e6a800);
+  --font-body: 'JetBrains Mono', monospace;
+  --subheader-bg: rgba(240, 228, 190, 0.65);
+  --picker-bg: #fdf8e8;
+  --picker-text: #2a1c00;
+  --picker-hover: rgba(184, 106, 0, 0.08);
+  --mode-arcade: #b86a00;
+  --mode-lab: #5a7a00;
+  --mode-business: #7a4d00;
+}
+
+/* ── Win16 Dark ───────────────────────────────────────────── */
+/* ── Win 3.11 (Classic) ───────────────────────────────────── */
+/* The authentic Windows 3.11 look: teal #008080 desktop,
+   silver #c0c0c0 window chrome, navy #000080 title bars,
+   proper 3-D bevel borders (white top/left, grey/black
+   bottom/right), and MS Sans Serif pixel-font feel.          */
+.theme-win16-light {
+  --bg: #008080;
+  /* Classic teal desktop */
+  --glass-bg: #c0c0c0;
+  /* Silver window face   */
+  --glass-border: #c0c0c0;
+  --glass-blur: 0px;
+  --glass-shine: transparent;
+  --accent: #000080;
+  /* Navy — selected items, title bar */
+  --accent-2: #0000aa;
+  --accent-glow: transparent;
+  --text: #000000;
+  --text-muted: #444444;
+  --text-faint: #808080;
+  --border: #808080;
+  --radius: 0;
+  --radius-sm: 0;
+  --radius-lg: 0;
+  --font-body: 'IBM Plex Mono', 'Courier New', monospace;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+  --font-display: 'IBM Plex Mono', monospace;
+  /* 3-D bevel: white highlight top-left, dark shadow bottom-right */
+  --shadow: 1px 1px 0 #ffffff inset, -1px -1px 0 #808080 inset, -2px -2px 0 #000000 inset;
+  --shadow-sm: 1px 1px 0 #ffffff inset, -1px -1px 0 #808080 inset;
+  --shadow-lg: 2px 2px 0 #ffffff inset, -2px -2px 0 #808080 inset, -3px -3px 0 #000000 inset;
+  --titlebar-grad: #000080;
+  /* Flat navy — no gradient in Win3.11 */
+  --subheader-bg: #c0c0c0;
+  --picker-bg: #c0c0c0;
+  --picker-text: #000000;
+  --picker-hover: #000080;
+  --success: #008000;
+  --warning: #808000;
+  --danger: #800000;
+  --mode-arcade: #800080;
+  --mode-lab: #008000;
+  --mode-business: #000080;
+}
+
+.theme-win16-light .glass,
+.theme-win16-light .glass-subtle {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: #c0c0c0;
+  /* Classic raised-window bevel */
+  border-top: 2px solid #ffffff;
+  border-left: 2px solid #ffffff;
+  border-bottom: 2px solid #000000;
+  border-right: 2px solid #000000;
+  box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #808080;
+}
+
+/* ── Win 3.11 High Contrast Black ─────────────────────────── */
+/* The built-in accessibility scheme shipped with Win 3.11:
+   pure black desktop, black window bg, white text,
+   cyan highlight color — exactly as it appeared on-screen.   */
+.theme-win16-dark {
+  --bg: #000000;
+  --glass-bg: #000000;
+  --glass-border: #ffffff;
+  --glass-blur: 0px;
+  --glass-shine: transparent;
+  --accent: #00ffff;
+  /* Cyan highlight */
+  --accent-2: #ffff00;
+  /* Yellow — secondary highlight */
+  --accent-glow: transparent;
+  --text: #ffffff;
+  --text-muted: #c0c0c0;
+  --text-faint: #606060;
+  --border: #ffffff;
+  --radius: 0;
+  --radius-sm: 0;
+  --radius-lg: 0;
+  --font-body: 'IBM Plex Mono', 'Courier New', monospace;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+  --font-display: 'IBM Plex Mono', monospace;
+  --shadow: none;
+  --shadow-sm: none;
+  --shadow-lg: none;
+  --titlebar-grad: #000000;
+  --success: #00ff00;
+  --warning: #ffff00;
+  --danger: #ff0000;
+  --mode-arcade: #ff00ff;
+  --mode-lab: #00ff00;
+  --mode-business: #c0c0c0;
+}
+
+.theme-win16-dark .glass,
+.theme-win16-dark .glass-subtle {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: #000000;
+  border: 2px solid #ffffff;
+  box-shadow: none;
+}
+
+.theme-win16-dark .bg-scene,
+.theme-win16-light .bg-scene {
+  animation: none !important;
+}
+
+/* ── Final Fantasy VI ─────────────────────────────────────── */
+/* ── Final Fantasy VI (SNES, 1994) ────────────────────────── */
+/* FF6 had one of the most distinctive UIs on the SNES.
+   Dialog/menu boxes were a very specific dark navy-blue
+   (#080830) with a bright cornflower-blue double-line border
+   (#3050d8 outer, #8090ff inner highlight). Background scene
+   was near-black indigo. Text was white #f8f8f8 with grey
+   for secondary info. The ATB/HP bars used a cyan-teal.     */
+.theme-ff6 {
+  --bg: #080818;
+  /* Near-black indigo stage bg   */
+  --glass-bg: #0c1040;
+  /* Dark navy menu box face      */
+  --glass-border: #3050d8;
+  /* Cornflower outer border      */
+  --glass-blur: 0px;
+  --glass-shine: transparent;
+  --accent: #8090ff;
+  /* Inner highlight / selected   */
+  --accent-2: #40c8d0;
+  /* Cyan ATB/HP bar              */
+  --accent-glow: rgba(128, 144, 255, 0.30);
+  --text: #f8f8f8;
+  --text-muted: #a0a8e0;
+  --text-faint: #404878;
+  --border: #3050d8;
+  --radius: 0;
+  --radius-sm: 0;
+  --radius-lg: 0;
+  --font-body: 'IBM Plex Mono', monospace;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-display: 'IBM Plex Mono', monospace;
+  --shadow: none;
+  --shadow-sm: none;
+  --shadow-lg: none;
+  --titlebar-grad: #0c1040;
+  --success: #40c8d0;
+  --warning: #e8c840;
+  --danger: #e03030;
+  --mode-arcade: #8090ff;
+  --mode-lab: #40c8d0;
+  --mode-business: #a0a8e0;
+}
+
+.theme-ff6 .glass,
+.theme-ff6 .glass-subtle {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: #0c1040;
+  /* FF6 menu: double-rule border — outer cornflower, inner highlight */
+  border: 3px solid #3050d8;
+  box-shadow: inset 0 0 0 1px #8090ff;
+}
+
+.theme-ff6 .bg-scene {
+  animation: none !important;
+}
+
+/* ── Castlevania (NES, 1986) ──────────────────────────────── */
+/* NES Castlevania palette: pure black bg, the castle walls
+   were dark brown-grey. The dominant accent was the torch
+   orange-red (#e84800), Simon's whip was bone white (#f8e8c8),
+   and enemy blood was a specific NES orange-red. Score/UI
+   text was white on black with no border chrome at all —
+   panels get a hard torch-orange border to frame them.       */
+.theme-castlevania {
+  --bg: #000000;
+  --glass-bg: #100808;
+  /* Very dark warm black panels */
+  --glass-border: #e84800;
+  /* Torch orange                */
+  --glass-blur: 0px;
+  --glass-shine: transparent;
+  --accent: #e84800;
+  /* Torch / flame orange        */
+  --accent-2: #f8e8c8;
+  /* Simon's bone/whip           */
+  --accent-glow: rgba(232, 72, 0, 0.40);
+  --text: #f8e8c8;
+  /* Bone — NES white-ish        */
+  --text-muted: #c09060;
+  --text-faint: #4a2808;
+  --border: #6a1800;
+  --radius: 0;
+  --radius-sm: 0;
+  --radius-lg: 0;
+  --font-body: 'IBM Plex Mono', monospace;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-display: 'IBM Plex Mono', monospace;
+  --shadow: none;
+  --shadow-sm: none;
+  --shadow-lg: none;
+  --titlebar-grad: #1a0800;
+  --success: #f8e8c8;
+  --warning: #e84800;
+  --danger: #e80000;
+  --mode-arcade: #e84800;
+  --mode-lab: #f8e8c8;
+  --mode-business: #c09060;
+}
+
+.theme-castlevania .glass,
+.theme-castlevania .glass-subtle {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: #100808;
+  border: 2px solid #e84800;
+  box-shadow: none;
+}
+
+.theme-castlevania .bg-scene {
+  animation: none !important;
+}
+
+/* ── TMNT (NES, 1989) ─────────────────────────────────────── */
+/* Teenage Mutant Ninja Turtles NES had a very dark stage bg,
+   the turtles themselves gave the palette: Leonardo blue,
+   Raphael red, Michelangelo orange, Donatello purple — but
+   the dominant UI color was the bright arcade-green title
+   (#00d800 on NES) on a black background. The sewer stages
+   were very dark with green-tinted pipe walls. HUD was
+   white text on black with colored turtle portrait borders. */
+.theme-tmnt {
+  --bg: #000000;
+  --glass-bg: #001408;
+  /* Dark sewer-green panels     */
+  --glass-border: #00d800;
+  /* NES bright arcade green     */
+  --glass-blur: 0px;
+  --glass-shine: transparent;
+  --accent: #00d800;
+  /* Arcade title green          */
+  --accent-2: #7800f8;
+  /* Donatello purple            */
+  --accent-glow: rgba(0, 216, 0, 0.35);
+  --text: #f8f8f8;
+  --text-muted: #60a860;
+  --text-faint: #1a4020;
+  --border: #005000;
+  --radius: 0;
+  --radius-sm: 0;
+  --radius-lg: 0;
+  --font-body: 'IBM Plex Mono', monospace;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-display: 'IBM Plex Mono', monospace;
+  --shadow: none;
+  --shadow-sm: none;
+  --shadow-lg: none;
+  --titlebar-grad: #001408;
+  --success: #00d800;
+  --warning: #f8a800;
+  --danger: #e80000;
+  --mode-arcade: #00d800;
+  --mode-lab: #7800f8;
+  --mode-business: #60a860;
+}
+
+.theme-tmnt .glass,
+.theme-tmnt .glass-subtle {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: #001408;
+  border: 2px solid #00d800;
+  box-shadow: none;
+}
+
+.theme-tmnt .bg-scene {
+  animation: none !important;
+}
+
+/* ── Metroid (NES, 1986) ──────────────────────────────────── */
+/* NES Metroid had a very striking palette completely unlike
+   the green used here. Samus wore an orange-gold power suit
+   (#e89000), the caverns of Zebes were black with magenta-
+   purple rock formations (#9800c8), and enemy Metroids were
+   a translucent pale tone. The HUD was black with orange
+   energy bars. Lava was red-orange. Zero trace of green —
+   that came from Super Metroid on SNES, which is newer.     */
+.theme-metroid {
+  --bg: #000000;
+  --glass-bg: #180818;
+  /* Dark Zebes cavern panels    */
+  --glass-border: #e89000;
+  /* Samus power suit orange     */
+  --glass-blur: 0px;
+  --glass-shine: transparent;
+  --accent: #e89000;
+  /* Orange power suit           */
+  --accent-2: #9800c8;
+  /* Magenta-purple rock/enemies */
+  --accent-glow: rgba(232, 144, 0, 0.40);
+  --text: #f8e8c0;
+  /* Warm white HUD text         */
+  --text-muted: #a86020;
+  --text-faint: #401808;
+  --border: #501000;
+  --radius: 0;
+  --radius-sm: 0;
+  --radius-lg: 0;
+  --font-body: 'IBM Plex Mono', monospace;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-display: 'IBM Plex Mono', monospace;
+  --shadow: none;
+  --shadow-sm: none;
+  --shadow-lg: none;
+  --titlebar-grad: #180808;
+  --success: #e89000;
+  --warning: #f8c000;
+  --danger: #e80000;
+  --mode-arcade: #e89000;
+  --mode-lab: #9800c8;
+  --mode-business: #a86020;
+}
+
+.theme-metroid .glass,
+.theme-metroid .glass-subtle {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: #180818;
+  border: 2px solid #e89000;
+  box-shadow: none;
+}
+
+.theme-metroid .bg-scene {
+  animation: none !important;
+}
+
+/* ── Synthwave ────────────────────────────────────────────── */
+.theme-synthwave {
+  --bg: #08001a;
+  --glass-bg: rgba(12, 0, 28, 0.68);
+  --glass-border: rgba(255, 0, 200, 0.22);
+  --glass-shine: rgba(255, 100, 255, 0.06);
+  --accent: #ff00cc;
+  --accent-2: #00eeff;
+  --accent-glow: rgba(255, 0, 200, 0.5);
+  --text: #ffccff;
+  --text-muted: #c060c0;
+  --text-faint: #4a1050;
+  --border: rgba(255, 0, 200, 0.16);
+  --titlebar-grad: linear-gradient(135deg, #6600aa, #ff00cc, #00eeff);
+}
+
+/* ── Cyberpunk ────────────────────────────────────────────── */
+.theme-cyberpunk {
+  --bg: #020c14;
+  --glass-bg: rgba(2, 12, 24, 0.72);
+  --glass-border: rgba(0, 240, 255, 0.18);
+  --glass-shine: rgba(0, 240, 255, 0.05);
+  --accent: #00f0ff;
+  --accent-2: #f0e000;
+  --accent-glow: rgba(0, 240, 255, 0.45);
+  --text: #c0f8ff;
+  --text-muted: #407080;
+  --text-faint: #0a2028;
+  --border: rgba(0, 240, 255, 0.14);
+  --titlebar-grad: linear-gradient(135deg, #00408a, #00f0ff, #f0e000);
+}
+
+/* ── Respect prefers-reduced-motion system setting ───────── */
+@media (prefers-reduced-motion: reduce) {
+
+  .bg-scene,
+  body[data-mode="arcade"] .bg-scene {
+    animation: none !important;
+  }
+}
+
+/* ── Super Mario Bros (NES, 1985) — Mario ─────────────────── */
+/* Sky blue world, Mario-red panels, white text throughout.
+   Top nav bar is black. Bottom footer bar is dark SMB1
+   ground brown. Inputs/dropdowns are white with black text. */
+.theme-mario {
+  --bg: #5c94fc;
+  /* NES sky blue                */
+  --glass-bg: #b53120;
+  /* Mario cap/shirt red         */
+  --glass-border: #c84b0c;
+  /* Brick/ground brown-orange   */
+  --glass-blur: 0px;
+  --glass-shine: transparent;
+  --accent: #f8b800;
+  /* Coin yellow                 */
+  --accent-2: #f8f8f8;
+  /* White — text contrast       */
+  --accent-glow: rgba(248, 184, 0, 0.40);
+  --text: #f8f8f8;
+  /* White on red panels         */
+  --text-muted: #f0c8a0;
+  --text-faint: #7a2010;
+  --border: #7a2808;
+  --radius: 0;
+  --radius-sm: 0;
+  --radius-lg: 0;
+  --font-body: 'Press Start 2P', monospace;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-display: 'Press Start 2P', monospace;
+  --shadow: none;
+  --shadow-sm: none;
+  --shadow-lg: none;
+  --titlebar-grad: #000000;
+  /* Top nav: black              */
+  --footer-bg: #6b3200;
+  /* Bottom bar: dark SMB1 brown */
+  --subheader-bg: #b53120;
+  /* Subheader: red              */
+  --input-bg: #ffffff;
+  /* White input boxes           */
+  --input-bg-focus: #ffffff;
+  --input-text: #000000;
+  /* Black text in inputs        */
+  --success: #3cbf00;
+  --warning: #f8b800;
+  --danger: #e80000;
+  --mode-arcade: #f8b800;
+  --mode-lab: #3cbf00;
+  --mode-business: #f0c8a0;
+  --picker-bg: #b53120;
+  --picker-text: #f8f8f8;
+  --picker-hover: rgba(248, 248, 248, 0.15);
+}
+
+.theme-mario .glass,
+.theme-mario .glass-subtle {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: #b53120;
+  border: 3px solid #c84b0c;
+  box-shadow: none;
+}
+
+.theme-mario .bg-scene {
+  animation: none !important;
+}
+
+/* ── Super Mario Bros (NES, 1985) — Luigi ─────────────────── */
+/* Mirror of Mario but green. Top nav black, bottom bar is
+   the same dark SMB1 brown, panels are Luigi green, white
+   text, white inputs with black text.                        */
+.theme-luigi {
+  --bg: #5c94fc;
+  /* Same NES sky blue           */
+  --glass-bg: #3cbf00;
+  /* Luigi cap green             */
+  --glass-border: #287800;
+  /* Darker forest green border  */
+  --glass-blur: 0px;
+  --glass-shine: transparent;
+  --accent: #f8b800;
+  /* Coin yellow                 */
+  --accent-2: #f8f8f8;
+  /* White — text contrast       */
+  --accent-glow: rgba(248, 184, 0, 0.40);
+  --text: #f8f8f8;
+  /* White on green panels       */
+  --text-muted: #c8f0a0;
+  --text-faint: #185008;
+  --border: #185008;
+  --radius: 0;
+  --radius-sm: 0;
+  --radius-lg: 0;
+  --font-body: 'Press Start 2P', monospace;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-display: 'Press Start 2P', monospace;
+  --shadow: none;
+  --shadow-sm: none;
+  --shadow-lg: none;
+  --titlebar-grad: #000000;
+  /* Top nav: black              */
+  --footer-bg: #6b3200;
+  /* Bottom bar: dark SMB1 brown */
+  --subheader-bg: #3cbf00;
+  /* Subheader: green            */
+  --input-bg: #ffffff;
+  /* White input boxes           */
+  --input-bg-focus: #ffffff;
+  --input-text: #000000;
+  /* Black text in inputs        */
+  --success: #3cbf00;
+  --warning: #f8b800;
+  --danger: #e80000;
+  --mode-arcade: #f8b800;
+  --mode-lab: #3cbf00;
+  --mode-business: #c8f0a0;
+  --picker-bg: #3cbf00;
+  --picker-text: #f8f8f8;
+  --picker-hover: rgba(248, 248, 248, 0.15);
+}
+
+.theme-luigi .glass,
+.theme-luigi .glass-subtle {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: #3cbf00;
+  border: 3px solid #287800;
+  box-shadow: none;
+}
+
+.theme-luigi .bg-scene {
+  animation: none !important;
+}
+
+/* ── Mega Man (NES, 1987) ─────────────────────────────────── */
+/* Mega Man 1 NES: the stage select screen was pure black with
+   Mega Man's exact NES sprite color — a specific cyan-blue
+   (#74c4fc on NES, brighter than assumed). Stage tiles used
+   varied colors but the iconic identity is black bg + that
+   sky blue suit. The HUD energy bars were the same cyan-blue
+   with a yellow lemon (#e8d800) for boss energy. Weapon
+   capsules flashed white. Mega Man's face/boots used a
+   slightly darker blue-grey (#3090c8).                       */
+.theme-megaman {
+  --bg: #000000;
+  --glass-bg: #001828;
+  /* Dark stage panel            */
+  --glass-border: #74c4fc;
+  /* Mega Man NES cyan-blue      */
+  --glass-blur: 0px;
+  --glass-shine: transparent;
+  --accent: #74c4fc;
+  /* Exact NES Mega Man color    */
+  --accent-2: #e8d800;
+  /* Boss energy bar lemon       */
+  --accent-glow: rgba(116, 196, 252, 0.35);
+  --text: #f8f8f8;
+  --text-muted: #5090c0;
+  --text-faint: #0a2840;
+  --border: #0a3050;
+  --radius: 0;
+  --radius-sm: 0;
+  --radius-lg: 0;
+  --font-body: 'Press Start 2P', monospace;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-display: 'Press Start 2P', monospace;
+  --shadow: none;
+  --shadow-sm: none;
+  --shadow-lg: none;
+  --titlebar-grad: #001828;
+  --success: #74c4fc;
+  --warning: #e8d800;
+  --danger: #e83000;
+  --mode-arcade: #74c4fc;
+  --mode-lab: #e8d800;
+  --mode-business: #5090c0;
+  --subheader-bg: #001828;
+  --picker-bg: #001828;
+  --picker-text: #f8f8f8;
+  --picker-hover: rgba(116, 196, 252, 0.20);
+}
+
+.theme-megaman .glass,
+.theme-megaman .glass-subtle {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: #001828;
+  border: 2px solid #74c4fc;
+  box-shadow: none;
+}
+
+.theme-megaman .bg-scene {
+  animation: none !important;
+}
+
+/* ── The Legend of Zelda (NES, 1986) ─────────────────────── */
+/* Hyrule overworld greens and earthy browns with Triforce
+   gold as the highlight color. Dark forest green bg (#1a2e00)
+   evokes the overworld grass. Panels are the warm dungeon
+   brown (#3c2000) with a gold Triforce border. Text is the
+   warm parchment-white of the game's item text.             */
+.theme-zelda {
+  --bg: #1a2e00;
+  /* Hyrule overworld deep green */
+  --glass-bg: #3c2000;
+  /* Dungeon/cave warm brown     */
+  --glass-border: #c8a000;
+  /* Triforce gold               */
+  --glass-blur: 0px;
+  --glass-shine: transparent;
+  --accent: #c8a000;
+  /* Triforce gold               */
+  --accent-2: #3cbf00;
+  /* Link tunic green            */
+  --accent-glow: rgba(200, 160, 0, 0.35);
+  --text: #f8e8a0;
+  /* Warm parchment              */
+  --text-muted: #a07828;
+  --text-faint: #4a3008;
+  --border: #6a4400;
+  --radius: 0;
+  --radius-sm: 0;
+  --radius-lg: 0;
+  --font-body: 'Press Start 2P', monospace;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-display: 'Press Start 2P', monospace;
+  --shadow: none;
+  --shadow-sm: none;
+  --shadow-lg: none;
+  --titlebar-grad: #3c2000;
+  --success: #3cbf00;
+  --warning: #c8a000;
+  --danger: #e80000;
+  --mode-arcade: #c8a000;
+  --mode-lab: #3cbf00;
+  --mode-business: #a07828;
+  --subheader-bg: #3c2000;
+  --picker-bg: #3c2000;
+  --picker-text: #f8e8a0;
+  --picker-hover: rgba(200, 160, 0, 0.20);
+}
+
+.theme-zelda .glass,
+.theme-zelda .glass-subtle {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: #3c2000;
+  border: 3px solid #c8a000;
+  /* Inner gold shimmer to suggest the Triforce glow */
+  box-shadow: inset 0 0 0 1px rgba(200, 160, 0, 0.25);
+}
+
+.theme-zelda .bg-scene {
+  animation: none !important;
+}
+
+/* ── Sonic ─────────────────────────────────────────────────── */
+/* Sonic's cobalt blue + gold rings + checkerboard white      */
+.theme-sonic {
+  --bg: #000818;
+  --glass-bg: rgba(0, 10, 30, 0.72);
+  --glass-border: rgba(0, 80, 216, 0.28);
+  --glass-shine: rgba(60, 140, 255, 0.07);
+  --accent: #0050d8;
+  --accent-2: #60aaff;
+  --accent-glow: rgba(255, 217, 0, 0.801);
+  --text: #ddeeff;
+  --text-muted: #4070b0;
+  --text-faint: #0a1a38;
+  --border: rgba(0, 80, 216, 0.20);
+  --titlebar-grad: linear-gradient(135deg, #002090, #0050d8, #60aaff);
+  --success: #22d362;
+  --warning: #f5c518;
+}
+
+/* ── Game Boy ──────────────────────────────────────────────── */
+/* DMG-01 4-shade green palette + putty beige shell           */
+.theme-gameboy {
+  --bg: #0f380f;
+  --glass-bg: rgba(15, 56, 15, 0.80);
+  --glass-border: rgba(139, 172, 15, 0.35);
+  --glass-blur: 0px;
+  --glass-shine: transparent;
+  --accent: #8bac0f;
+  --accent-2: #9bbc0f;
+  --accent-glow: transparent;
+  --text: #9bbc0f;
+  --text-muted: #8bac0f;
+  --text-faint: #306230;
+  --border: rgba(139, 172, 15, 0.30);
+  --radius: 4px;
+  --radius-sm: 2px;
+  --radius-lg: 8px;
+  --font-body: 'JetBrains Mono', monospace;
+  --shadow: 2px 2px 0 #0f380f;
+  --shadow-sm: 1px 1px 0 #0f380f;
+  --titlebar-grad: #306230;
+  --success: #9bbc0f;
+  --warning: #8bac0f;
+  --danger: #306230;
+  --mode-arcade: #9bbc0f;
+  --mode-lab: #8bac0f;
+  --mode-business: #306230;
+}
+
+.theme-gameboy .glass,
+.theme-gameboy .glass-subtle {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.theme-gameboy .bg-scene {
+  animation: none !important;
+}
+
+/* ================================================================
+   CLASSIC COMPUTER & TERMINAL THEMES
+   ================================================================ */
+
+/* ── TRS-80 ────────────────────────────────────────────────── */
+/* Tandy Radio Shack Model I/III — white phosphor on black,
+   chunky uppercase character-cell aesthetic                   */
+/* ── TRS-80 ────────────────────────────────────────────────── */
+/* Tandy TRS-80 Model I/III white phosphor P4 screen.
+   Pure white characters on black, hard pixel borders,
+   VT323 gives the chunky uppercase character-cell look.      */
+.theme-trs80 {
+  --bg: #000000;
+  --glass-bg: #000000;
+  --glass-border: #ffffff;
+  --glass-blur: 0px;
+  --glass-shine: transparent;
+  --accent: #ffffff;
+  --accent-2: #dddddd;
+  --accent-glow: transparent;
+  --text: #ffffff;
+  --text-muted: #bbbbbb;
+  --text-faint: #555555;
+  --border: #333333;
+  --radius: 0;
+  --radius-sm: 0;
+  --radius-lg: 0;
+  --font-body: 'VT323', monospace;
+  --font-mono: 'VT323', monospace;
+  --font-display: 'VT323', monospace;
+  --shadow: none;
+  --shadow-sm: none;
+  --shadow-lg: none;
+  --titlebar-grad: #111111;
+  --success: #ffffff;
+  --warning: #bbbbbb;
+  --danger: #ffffff;
+  --mode-arcade: #ffffff;
+  --mode-lab: #dddddd;
+  --mode-business: #888888;
+}
+
+.theme-trs80 .glass,
+.theme-trs80 .glass-subtle {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: #000000;
+  /* Single hard white rule — TRS-80 had no chrome, just the screen edge */
+  border: 2px solid #ffffff;
+  box-shadow: none;
+}
+
+.theme-trs80 .bg-scene {
+  animation: none !important;
+}
+
+/* ── Apple II ──────────────────────────────────────────────── */
+/* Apple II green phosphor (P39 phosphor) — the characteristic
+   warm yellow-green on a very dark warm black. The Apple II
+   used uppercase-only text mode; VT323 nails the chunky
+   character-cell look. Panels get a subtle phosphor glow
+   border to simulate the screen bezel edge.                  */
+.theme-apple2 {
+  --bg: #080e00;
+  /* Warm dark — not pure black */
+  --glass-bg: #080e00;
+  --glass-border: #33ff00;
+  --glass-blur: 0px;
+  --glass-shine: transparent;
+  --accent: #33ff00;
+  /* P39 yellow-green, not pure green */
+  --accent-2: #aaff66;
+  --accent-glow: rgba(51, 255, 0, 0.20);
+  --text: #33ff00;
+  --text-muted: #22bb00;
+  --text-faint: #0a3000;
+  --border: #1a6600;
+  --radius: 0;
+  --radius-sm: 0;
+  --radius-lg: 0;
+  --font-body: 'VT323', monospace;
+  --font-mono: 'VT323', monospace;
+  --font-display: 'VT323', monospace;
+  --shadow: none;
+  --shadow-sm: none;
+  --shadow-lg: none;
+  --titlebar-grad: #001400;
+  --success: #33ff00;
+  --warning: #aaff66;
+  --danger: #33ff00;
+  --mode-arcade: #aaff66;
+  --mode-lab: #33ff00;
+  --mode-business: #22bb00;
+}
+
+.theme-apple2 .glass,
+.theme-apple2 .glass-subtle {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: #080e00;
+  /* Phosphor glow: bright inner edge fading to the screen border */
+  border: 2px solid #33ff00;
+  box-shadow: 0 0 8px rgba(51, 255, 0, 0.25);
+}
+
+.theme-apple2 .bg-scene {
+  animation: none !important;
+}
+
+/* ── Commodore 64 ──────────────────────────────────────────── */
+/* The exact C64 NTSC palette: border region is #7070e8,
+   screen area is #4040e8 cobalt blue, text is #a0a0f8
+   cornflower. The C64 had a distinct darker border around
+   the text area — panels use this as their background while
+   the page bg is the outer border region color.              */
+.theme-c64 {
+  --bg: #5050c0;
+  /* Outer border region */
+  --glass-bg: #4040e8;
+  /* Screen / text area  */
+  --glass-border: #7070e8;
+  --glass-blur: 0px;
+  --glass-shine: transparent;
+  --accent: #a0a0f8;
+  /* C64 cornflower text  */
+  --accent-2: #ffffff;
+  --accent-glow: transparent;
+  --text: #a0a0f8;
+  --text-muted: #7878d0;
+  --text-faint: #505098;
+  --border: #7070e8;
+  --radius: 0;
+  --radius-sm: 0;
+  --radius-lg: 0;
+  --font-body: 'VT323', monospace;
+  --font-mono: 'VT323', monospace;
+  --font-display: 'VT323', monospace;
+  --shadow: none;
+  --shadow-sm: none;
+  --shadow-lg: none;
+  --titlebar-grad: #3030c8;
+  --success: #a0a0f8;
+  --warning: #ffffff;
+  --danger: #f86060;
+  --mode-arcade: #ffffff;
+  --mode-lab: #a0a0f8;
+  --mode-business: #7878d0;
+}
+
+.theme-c64 .glass,
+.theme-c64 .glass-subtle {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: #4040e8;
+  /* The C64 screen area sat inside the border — simulate with
+     a border that matches the outer border-region color      */
+  border: 3px solid #5050c0;
+  box-shadow: none;
+}
+
+.theme-c64 .bg-scene {
+  animation: none !important;
+}
+
+/* ── IBM 5250 / AS400 ──────────────────────────────────────── */
+/* The green-screen terminal that ran half of corporate
+   America — 5250 dumb terminal on a black field.             */
+.theme-ibm5250 {
+  --bg: #000000;
+  --glass-bg: #000000;
+  --glass-border: rgba(0, 200, 0, 0.28);
+  --glass-blur: 0px;
+  --glass-shine: transparent;
+  --accent: #00cc00;
+  --accent-2: #00ff00;
+  --accent-glow: transparent;
+  --text: #00cc00;
+  --text-muted: #009900;
+  --text-faint: #003300;
+  --border: rgba(0, 200, 0, 0.22);
+  --radius: 0;
+  --radius-sm: 0;
+  --radius-lg: 0;
+  --font-body: 'IBM Plex Mono', 'Courier New', monospace;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-display: 'IBM Plex Mono', monospace;
+  --shadow: none;
+  --shadow-sm: none;
+  --shadow-lg: none;
+  --titlebar-grad: #001a00;
+  --success: #00ff00;
+  --warning: #00cc00;
+  --danger: #00ff00;
+  --mode-arcade: #00ff00;
+  --mode-lab: #00cc00;
+  --mode-business: #009900;
+}
+
+.theme-ibm5250 .glass,
+.theme-ibm5250 .glass-subtle {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: #000000;
+  border: 1px solid rgba(0, 200, 0, 0.28);
+  box-shadow: none;
+}
+
+.theme-ibm5250 .bg-scene {
+  animation: none !important;
+}
+
+/* ── Motif / CDE ───────────────────────────────────────────── */
+/* Common Desktop Environment as shipped on HP-UX, Solaris,
+   AIX, IRIX ca. 1993-2000. Desktop bg is the characteristic
+   CDE "steel teal" #5f9ea0, panel faces are #aeb2c3 (the
+   real CDE widget colour). Title bars used a left-to-right
+   gradient from deep navy to mid-blue — NOT diagonal.
+   Bevels are the true Motif 3-D rule: outer highlight white,
+   inner shadow #606060, outer shadow black.                  */
+.theme-cde {
+  --bg: #5f9ea0;
+  /* CDE "steel teal" desktop    */
+  --glass-bg: #aeb2c3;
+  /* Actual CDE widget face       */
+  --glass-border: #aeb2c3;
+  --glass-blur: 0px;
+  --glass-shine: transparent;
+  --accent: #000080;
+  /* Navy — selection, focus      */
+  --accent-2: #4060a0;
+  --accent-glow: transparent;
+  --text: #000000;
+  --text-muted: #333333;
+  --text-faint: #777777;
+  --border: #888888;
+  --radius: 0;
+  --radius-sm: 0;
+  --radius-lg: 0;
+  --font-body: 'IBM Plex Mono', 'Helvetica', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-display: 'IBM Plex Mono', sans-serif;
+  /* Motif shadow: drop right+down, no inset component on --shadow */
+  --shadow: 2px 2px 0 #000000;
+  --shadow-sm: 1px 1px 0 #000000;
+  --shadow-lg: 3px 3px 0 #000000;
+  /* CDE title bar: left-to-right navy → steel blue, no diagonal */
+  --titlebar-grad: linear-gradient(90deg, #000080 0%, #4060a0 60%, #6080c0 100%);
+  --success: #006400;
+  --warning: #8b6914;
+  --danger: #800000;
+  --mode-arcade: #800080;
+  --mode-lab: #006400;
+  --mode-business: #000080;
+  --subheader-bg: #aeb2c3;
+  --picker-bg: #aeb2c3;
+  --picker-text: #000000;
+  --picker-hover: #000080;
+}
+
+.theme-cde .glass,
+.theme-cde .glass-subtle {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: #aeb2c3;
+  /* Full Motif bevel: white outer highlight, #606060 inner shadow,
+     #000000 outer shadow on bottom/right                        */
+  border-top: 2px solid #ffffff;
+  border-left: 2px solid #ffffff;
+  border-bottom: 2px solid #000000;
+  border-right: 2px solid #000000;
+  box-shadow: inset 1px 1px 0 #d0d4e4, inset -1px -1px 0 #606060;
+}
+
+.theme-cde .bg-scene {
+  animation: none !important;
+}
+
+/* ── NeXTSTEP ──────────────────────────────────────────────── */
+/* NeXT Computers ran NeXTSTEP 1.0–3.3 (1988-1995), later
+   OpenStep. The OS had a very specific look:
+   - Desktop: medium charcoal #555555
+   - Window chrome: dark #333333 with a lighter #aaaaaa title bar
+   - Title bar text: black on grey (unique — most OSes did
+     white-on-dark or dark-on-light, NeXT did dark-on-grey)
+   - Accent/highlight: the NeXT logo yellow #f5c518
+   - Hard rectangular drop shadows offset 4px right+down
+   - No gradients, no curves, no frosted glass                */
+.theme-nextstep {
+  --bg: #555555;
+  /* Charcoal desktop            */
+  --glass-bg: #333333;
+  /* Dark window chrome          */
+  --glass-border: #222222;
+  --glass-blur: 0px;
+  --glass-shine: transparent;
+  --accent: #f5c518;
+  /* NeXT logo yellow            */
+  --accent-2: #ffffff;
+  --accent-glow: transparent;
+  --text: #e8e8e8;
+  --text-muted: #aaaaaa;
+  --text-faint: #666666;
+  --border: #222222;
+  --radius: 0;
+  --radius-sm: 0;
+  --radius-lg: 0;
+  --font-body: 'Inconsolata', 'Helvetica Neue', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-display: 'Inconsolata', sans-serif;
+  /* NeXT drop shadow: hard offset, no blur — like the real thing */
+  --shadow: 4px 4px 0 rgba(0, 0, 0, 0.9);
+  --shadow-sm: 2px 2px 0 rgba(0, 0, 0, 0.9);
+  --shadow-lg: 6px 6px 0 rgba(0, 0, 0, 0.9);
+  /* Title bar: flat grey — no gradient in NeXTSTEP */
+  --titlebar-grad: #aaaaaa;
+  --success: #44aa44;
+  --warning: #f5c518;
+  --danger: #cc2222;
+  --mode-arcade: #f5c518;
+  --mode-lab: #aaaaaa;
+  --mode-business: #888888;
+  --subheader-bg: #444444;
+  --picker-bg: #333333;
+  --picker-text: #e8e8e8;
+  --picker-hover: rgba(245, 197, 24, 0.15);
+}
+
+.theme-nextstep .glass,
+.theme-nextstep .glass-subtle {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: #333333;
+  /* Hard 1px border: light top/left (barely), dark bottom/right */
+  border-top: 1px solid #555555;
+  border-left: 1px solid #555555;
+  border-bottom: 1px solid #111111;
+  border-right: 1px solid #111111;
+  /* The signature NeXT hard drop shadow */
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.85);
+}
+
+.theme-nextstep .bg-scene {
+  animation: none !important;
+}
+
+/* ── BIOS / POST ───────────────────────────────────────────── */
+/* Award/AMI BIOS splash screen blue — that startup screen
+   before Windows loaded; cyan on dark navy.                  */
+.theme-bios {
+  --bg: #000090;
+  --glass-bg: rgba(0, 0, 140, 0.95);
+  --glass-border: rgba(0, 255, 255, 0.30);
+  --glass-blur: 0px;
+  --glass-shine: transparent;
+  --accent: #00ffff;
+  --accent-2: #ffffff;
+  --accent-glow: transparent;
+  --text: #ffffff;
+  --text-muted: #aaaaff;
+  --text-faint: #5555cc;
+  --border: rgba(0, 255, 255, 0.25);
+  --radius: 0;
+  --radius-sm: 0;
+  --radius-lg: 0;
+  --font-body: 'VT323', 'Courier New', monospace;
+  --font-mono: 'VT323', 'Courier New', monospace;
+  --font-display: 'VT323', monospace;
+  --shadow: none;
+  --shadow-sm: none;
+  --shadow-lg: none;
+  --titlebar-grad: #0000aa;
+  --success: #00ffff;
+  --warning: #ffff00;
+  --danger: #ff4444;
+  --mode-arcade: #ffffff;
+  --mode-lab: #00ffff;
+  --mode-business: #aaaaff;
+}
+
+.theme-bios .glass,
+.theme-bios .glass-subtle {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: rgba(0, 0, 140, 0.97);
+  border: 1px solid rgba(0, 255, 255, 0.30);
+  box-shadow: none;
+}
+
+.theme-bios .bg-scene {
+  animation: none !important;
+}
+
+/* ── Ocean Dark ────────────────────────────────────────────── */
+/* Deep sea teal — rich navy bg with teal/cyan accent,
+   a clean professional dark distinct from the blue-grey default */
+.theme-ocean {
+  --bg: #020d14;
+  --glass-bg: rgba(2, 18, 28, 0.70);
+  --glass-border: rgba(10, 126, 164, 0.28);
+  --glass-shine: rgba(80, 200, 240, 0.06);
+  --accent: #0a7ea4;
+  --accent-2: #56cfe1;
+  --accent-glow: rgba(10, 126, 164, 0.50);
+  --text: #cceeff;
+  --text-muted: #3a7a90;
+  --text-faint: #0a2a38;
+  --border: rgba(10, 126, 164, 0.20);
+  --titlebar-grad: linear-gradient(135deg, #041a28, #0a7ea4, #56cfe1);
+  --success: #22d3b8;
+  --warning: #f0a030;
+  --danger: #e84040;
+}
+
+/* ── Rose Light ─────────────────────────────────────────────── */
+/* Warm blush — cream background with dusty rose accents,
+   a softer counterpart to the cool-toned default Light theme  */
+.theme-rose {
+  --bg: #fdf0f2;
+  --glass-bg: rgba(253, 240, 242, 0.75);
+  --glass-border: rgba(200, 100, 120, 0.20);
+  --glass-shine: rgba(255, 255, 255, 0.65);
+  --accent: #c0536a;
+  --accent-2: #e8a0a8;
+  --accent-glow: rgba(192, 83, 106, 0.25);
+  --text: #2a0d12;
+  --text-muted: #8a4050;
+  --text-faint: #d4a0a8;
+  --border: rgba(200, 100, 120, 0.14);
+  --titlebar-grad: linear-gradient(135deg, #8c2038, #c0536a, #e8a0a8);
+  --subheader-bg: rgba(245, 218, 222, 0.65);
+  --picker-bg: #fdf0f2;
+  --picker-text: #2a0d12;
+  --picker-hover: rgba(192, 83, 106, 0.08);
+  --success: #2a8c5a;
+  --warning: #c07030;
+  --danger: #c0202a;
+  --mode-arcade: #c026a0;
+  --mode-lab: #2a8c5a;
+  --mode-business: #8a4050;
+}
+
+/* ── MS-DOS ─────────────────────────────────────────────────── */
+/* Classic DOS prompt — black bg, light grey text, the C:\>
+   experience that shipped on a billion beige boxes           */
+.theme-msdos {
+  --bg: #000000;
+  --glass-bg: #000000;
+  --glass-border: rgba(170, 170, 170, 0.30);
+  --glass-blur: 0px;
+  --glass-shine: transparent;
+  --accent: #aaaaaa;
+  --accent-2: #ffffff;
+  --accent-glow: transparent;
+  --text: #aaaaaa;
+  --text-muted: #777777;
+  --text-faint: #333333;
+  --border: rgba(170, 170, 170, 0.22);
+  --radius: 0;
+  --radius-sm: 0;
+  --radius-lg: 0;
+  --font-body: 'IBM Plex Mono', 'Courier New', monospace;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-display: 'IBM Plex Mono', monospace;
+  --shadow: none;
+  --shadow-sm: none;
+  --shadow-lg: none;
+  --titlebar-grad: #222222;
+  --success: #aaaaaa;
+  --warning: #aaaaaa;
+  --danger: #ffffff;
+  --mode-arcade: #ffffff;
+  --mode-lab: #aaaaaa;
+  --mode-business: #777777;
+}
+
+.theme-msdos .glass,
+.theme-msdos .glass-subtle {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: #000000;
+  border: 1px solid rgba(170, 170, 170, 0.28);
+  box-shadow: none;
+}
+
+.theme-msdos .bg-scene {
+  animation: none !important;
+}

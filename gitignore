@@ -1,0 +1,9 @@
+# Local config — contains org-specific fields; do not commit
+company.conf
+
+# Ticket image uploads — user data, never commit
+uploads/
+
+# Database backups — may contain sensitive data
+*.sql.bak
+*_backup.sql

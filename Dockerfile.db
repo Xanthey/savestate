@@ -1,0 +1,9 @@
+# ═══════════════════════════════════════════════════════════════════
+#  SaveState v2 — DB Image
+#  Bakes schema.sql into the MySQL 8 init directory so the database
+#  is ready on first boot with no extra setup.
+# ═══════════════════════════════════════════════════════════════════
+
+FROM mysql:8.0
+
+COPY schema.sql /docker-entrypoint-initdb.d/01-schema.sql
